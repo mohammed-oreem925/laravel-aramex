@@ -21,6 +21,6 @@ class AramexServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../database/migrations/' => database_path('migrations'),
-        ], 'migrations');
+        ], 'migrations/Aramex');
     }
 }
