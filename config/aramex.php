@@ -4,57 +4,18 @@ return [
     'mode' => env('ARAMEX_MODE', 'test'),
 
     'test' => [
-        'country_code' => '',
-        'entity' => '',
-        'number' => '',
-        'pin' => '',
-        'username' => '',
-        'password' => ''
+        'version' => 'v1.0',
+        'locationURL' => 'https://ws.sbx.aramex.net/shippingapi.v2/location/service_1_0.svc?wsdl',
+        'rateURL' => 'https://ws.sbx.aramex.net/ShippingAPI.V2/RateCalculator/Service_1_0.svc?wsdl',
+        'shippingURL' => 'https://ws.sbx.aramex.net/shippingapi.v2/shipping/service_1_0.svc?wsdl',
+        'trackingURL' => 'https://ws.sbx.aramex.net/ShippingAPI.V2/tracking/Service_1_0.svc?wsdl',
     ],
 
     'live' => [
-        'country_code' => env('ARAMEX_COUNTRY_CODE'),
-        'entity' => env('ARAMEX_ENTITY'),
-        'number' => env('ARAMEX_NUMBER'),
-        'pin' => env('ARAMEX_PIN'),
-        'username' => env('ARAMEX_USERNAME'),
-        'password' => env('ARAMEX_PASSWORD'),
+        'version' => 'v1.0',
+        'locationURL' => 'https://ws.aramex.net/shippingapi.v2/location/service_1_0.svc?wsdl',
+        'rateURL' => 'https://ws.aramex.net/ShippingAPI.V2/RateCalculator/Service_1_0.svc?wsdl',
+        'shippingURL' => 'https://ws.aramex.net/shippingapi.v2/shipping/service_1_0.svc?wsdl',
+        'trackingURL' => 'https://ws.aramex.net/ShippingAPI.V2/tracking/Service_1_0.svc?wsdl',
     ],
-
-    'shipper' => [
-        'name' => '',
-        'email' => '',
-        'mobile' => '',
-        'company' => '',
-        'address' => [
-            'line1' => '',
-            'line2' => ' ',
-            'post_code' => '',
-            'city' => '',
-            'country_code' => '',
-            'state_or_province_code' => ''
-        ]
-    ],
-
-    'third_party' => [
-        'name' => '',
-        'email' => '',
-        'mobile' => '',
-        'company' => '',
-        'address' => [
-            'line1' => '',
-            'line2' => '',
-            'post_code' => '',
-            'city' => '',
-            'country_code' => '', //should be same account country code
-            'state_or_province_code' => ''
-        ]
-    ],
-
-    'kit' => [
-        'height' => '',
-        'width' => '',
-        'length' => '',
-        'weight' => ''
-    ]
 ];
