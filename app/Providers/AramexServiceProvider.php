@@ -22,5 +22,8 @@ class AramexServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../database/migrations/' => database_path('migrations'),
         ], 'migrations/Aramex');
+        $this->publishes([
+            __DIR__ . '/../../config/aramex.php' => config_path('aramex.php'),
+        ], 'config');
     }
 }
