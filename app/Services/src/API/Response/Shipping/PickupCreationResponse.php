@@ -22,7 +22,7 @@ class PickupCreationResponse extends Response
     /**
      * @return ProcessedPickup
      */
-    public function getPrecessedPickup(): ProcessedPickup
+    public function getPrecessedPickup(): ProcessedPickup | null
     {
         return $this->precessedPickup;
     }

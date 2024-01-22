@@ -59,7 +59,7 @@ class CreatePickupRequest extends FormRequest
 
             'pickup.pickupItems' => 'required|array',
             'pickup.pickupItems.0.productGroup' => 'required|string|size:3|in:DOM,EXP',
-            'pickup.pickupItems.0.productType' => 'nullable|string|size:3|in:PDX,PPX,PLX,DDX,DPX,GDX,GPX,EXP,OND',
+            'pickup.pickupItems.0.productType' => 'nullable|string|size:3|in:PDX,PPX,PLX,DDX,DPX,GDX,GPX,EPX,OND',
             'pickup.pickupItems.0.paymentType' => 'required|size:1|in:P,C,3',
             'pickup.pickupItems.0.numberOfPieces' => 'required|integer|min:1|max:100',
             'pickup.pickupItems.0.shipmentWeight' => 'required|numeric|gt:0|max:100',

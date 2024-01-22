@@ -364,11 +364,14 @@ class Aramex
         }
 
         $aramexShipment = AramexShipment::select('id', 'shipments')->find($request->input('shipmentId'));
-        $shipments = json_decode($aramexShipment->shipments, true);
+        if ($aramexShipment) {
+            $shipments = json_decode($aramexShipment->shipments, true);
 
-        for ($i = 0; $i < count($shipments); $i++) {
-            $shipment = new Shipment();
-            $pickupShipments[] = $shipment->createFromArray($shipments[$i]);
+            for ($i = 0; $i < count($shipments); $i++) {
+                $shipment = new Shipment();
+                $pickupShipments[] = $shipment->createFromArray($shipments[$i]);
+            }
+            $pickup->setShipments($pickupShipments);
         }
 
         $pickup
@@ -380,8 +383,7 @@ class Aramex
             ->setLastPickupTime(strtotime($request->input('pickup.lastPickupTime')))
             ->setClosingTime(strtotime($request->input('pickup.closingTime')))
             ->setStatus($request->input('pickup.status'))
-            ->setReference1($request->input('pickup.reference1'))
-            ->setShipments($pickupShipments);
+            ->setReference1($request->input('pickup.reference1'));
 
         $labelInfo = (new LabelInfo())
             ->setReportId(9201)
@@ -391,13 +393,13 @@ class Aramex
             ->setPickup($pickup)
             ->run();
 
-        $responseData = [$response->getPrecessedPickup()->getGUID(), $response->getPrecessedPickup()->getId(), $response->getNotificationMessages()];
+        $responseData = [$response->getPrecessedPickup() ? $response->getPrecessedPickup()->getGUID() : null, $response->getPrecessedPickup() ? $response->getPrecessedPickup()->getId() : null, $response->getNotificationMessages()];
 
         self::log($request->all(), $responseData, $createPickup->getWsdlAccordingToEnvironment(), $response->getHasErrors() ? 'failed' : 'success');
 
         if (!$response->getHasErrors()) {
             $precessedPickup = $response->getPrecessedPickup();
-            AramexPickup::create([
+            $aramexPickup = AramexPickup::create([
                 'aramex_id' => $precessedPickup->getId(),
                 'guid' => $precessedPickup->getGUID(),
                 'reference1' => $precessedPickup->getReference1(),
@@ -405,9 +407,11 @@ class Aramex
                 'status' => 'Created',
                 'user_id' => 1,
             ]);
-            $aramexShipment->update(['pickupGUID' => $precessedPickup->getGUID(), 'status' => 'ready']);
+            if ($aramexShipment) {
+                $aramexShipment->update(['pickupGUID' => $precessedPickup->getGUID(), 'status' => 'ready']);
+            }
 
-            return ['status' => true, 'shipment' => $aramexShipment];
+            return ['status' => true, 'shipment' => $aramexShipment, 'pickup' => ['guid' => $precessedPickup->getGUID(), 'aramex_id' => $aramexPickup->aramex_id]];
         } else {
             $messages = json_encode($response->getNotificationMessages());
             return ['status' => false, 'messages' => $messages];
