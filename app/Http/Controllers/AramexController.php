@@ -65,12 +65,7 @@ class AramexController extends Controller
     {
         $response = Aramex::createShipments($request);
         if ($response['status']) {
-            $pickupGUID = $request->input('shipments.0.pickupGUID');
-            if ($pickupGUID) {
-                return redirect("/aramex/shipments/{$response['shipment']->id}");
-            } else {
-                return redirect("/aramex/pickups/create/{$response['shipment']->id}");
-            }
+            return redirect("/aramex/shipments");
         } else {
             return back()->with('messages', $response['messages'])->withInput();
         }

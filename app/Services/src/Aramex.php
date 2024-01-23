@@ -795,33 +795,38 @@ class Aramex
         self::log($request->all(), $responseData, $createdShipment->getWsdlAccordingToEnvironment(), $result->getHasErrors() ? 'failed' : 'success');
 
         if (!$result->getHasErrors()) {
-            $shipmentAttachments = $result->getShipments()[0]->ShipmentAttachments;
-            $shipmentAttachmentsJson = $shipmentAttachments ? json_encode($shipmentAttachments) : null;
-            $pickupGUID = $request->input('shipments.0.pickupGUID');
-            $status = $pickupGUID ? 'ready' : 'created';
-
             $shipments = $request->input('shipments');
+            $shipmentObjects = [];
+
             for ($i = 0; $i < count($shipments); $i++) {
+                $shipmentAttachments = $result->getShipments()[$i]->ShipmentAttachments;
+                $shipmentAttachmentsJson = $shipmentAttachments ? json_encode($shipmentAttachments) : null;
+                $pickupGUID = $shipments[$i]['pickupGUID'];
+                $status = $pickupGUID ? 'ready' : 'created';
+
                 $shipments[$i]['shipper']['accountNumber'] = $createdShipment->getClientInfo()->getAccountNumber();
                 $shipments[$i]['consignee']['accountNumber'] = $shipments[$i]['shipper']['accountNumber'];
-            }
-            $shipment = AramexShipment::create([
-                'aramex_id' => $result->getShipments()[0]->ID,
-                'reference1' => $result->getShipments()[0]->Reference1,
-                'reference2' => $result->getShipments()[0]->Reference2,
-                'reference3' => $result->getShipments()[0]->Reference3,
-                'foreignHAWB' => $result->getShipments()[0]->ForeignHAWB,
-                'labelURL' => $result->getShipments()[0]->ShipmentLabel->LabelURL,
-                'labelContents' => $result->getShipments()[0]->ShipmentLabel->LabelFileContents,
-                'status' => $status,
-                'shipment_details_response' => json_encode($result->getShipments()[0]->ShipmentDetails),
-                'shipmentAttachments' => $shipmentAttachmentsJson,
-                'shipments' => json_encode($shipments),
-                'pickupGUID' => $pickupGUID,
-                'user_id' => auth()->id(),
-            ]);
-            return ['status' => true, 'shipment' => $shipment];
 
+                $shipment = AramexShipment::create([
+                    'aramex_id' => $result->getShipments()[$i]->ID,
+                    'reference1' => $result->getShipments()[$i]->Reference1,
+                    'reference2' => $result->getShipments()[$i]->Reference2,
+                    'reference3' => $result->getShipments()[$i]->Reference3,
+                    'foreignHAWB' => $result->getShipments()[$i]->ForeignHAWB,
+                    'labelURL' => $result->getShipments()[$i]->ShipmentLabel->LabelURL,
+                    'labelContents' => $result->getShipments()[$i]->ShipmentLabel->LabelFileContents,
+                    'status' => $status,
+                    'shipment_details_response' => json_encode($result->getShipments()[$i]->ShipmentDetails),
+                    'shipmentAttachments' => $shipmentAttachmentsJson,
+                    'shipments' => json_encode($shipments[$i]),
+                    'pickupGUID' => $pickupGUID,
+                    'user_id' => auth()->id(),
+                ]);
+
+                $shipmentObjects[] = $shipment;
+            }
+
+            return ['status' => true, 'shipments' => $shipmentObjects];
         } else {
             $messages = json_encode($result->getNotificationMessages());
             return ['status' => false, 'messages' => $messages];
