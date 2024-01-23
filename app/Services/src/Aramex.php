@@ -495,27 +495,29 @@ class Aramex
             }
 
             $items = [];
-            for ($j = 0; $j < count($request->input('shipments.' . $i . '.details.items')); $j++) {
-                $item = new ShipmentItem();
+            if ($request->input('shipments.' . $i . '.details.items')) {
+                for ($j = 0; $j < count($request->input('shipments.' . $i . '.details.items')); $j++) {
+                    $item = new ShipmentItem();
 
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType')) {
-                    $item->setPackageType($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType'));
-                }
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.quantity')) {
-                    $item->setQuantity($request->input('shipments.' . $i . '.details.items.' . $j . '.quantity'));
-                }
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.comments')) {
-                    $item->setComments($request->input('shipments.' . $i . '.details.items.' . $j . '.comments'));
-                }
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.weightUnit')) {
-                    $weight->setUnit($request->input('shipments.' . $i . '.details.items.' . $j . '.weightUnit'));
-                }
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.weight')) {
-                    $weight->setValue($request->input('shipments.' . $i . '.details.items.' . $j . '.weight'));
-                    $item->setWeight($weight);
-                }
-                if ($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType') || $request->input('shipments.' . $i . '.details.items.' . $j . '.quantity') || $request->input('shipments.' . $i . '.details.items.' . $j . '.comments') || $request->input('shipments.' . $i . '.details.items.' . $j . '.weight')) {
-                    $items[] = $item;
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType')) {
+                        $item->setPackageType($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType'));
+                    }
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.quantity')) {
+                        $item->setQuantity($request->input('shipments.' . $i . '.details.items.' . $j . '.quantity'));
+                    }
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.comments')) {
+                        $item->setComments($request->input('shipments.' . $i . '.details.items.' . $j . '.comments'));
+                    }
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.weightUnit')) {
+                        $weight->setUnit($request->input('shipments.' . $i . '.details.items.' . $j . '.weightUnit'));
+                    }
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.weight')) {
+                        $weight->setValue($request->input('shipments.' . $i . '.details.items.' . $j . '.weight'));
+                        $item->setWeight($weight);
+                    }
+                    if ($request->input('shipments.' . $i . '.details.items.' . $j . '.packageType') || $request->input('shipments.' . $i . '.details.items.' . $j . '.quantity') || $request->input('shipments.' . $i . '.details.items.' . $j . '.comments') || $request->input('shipments.' . $i . '.details.items.' . $j . '.weight')) {
+                        $items[] = $item;
+                    }
                 }
             }
 
