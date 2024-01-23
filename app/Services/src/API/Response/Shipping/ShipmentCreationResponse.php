@@ -41,15 +41,19 @@ class ShipmentCreationResponse extends Response
     {
         parent::parse($obj);
         if (isset($obj->Shipments->ProcessedShipment)) {
-            if ($obj->Shipments->ProcessedShipment->Notifications) {
-                $newNotifications = Notification::parseArray($obj->Shipments->ProcessedShipment->Notifications);
-                if ($newNotifications) {
-                    $this->setHasErrors(true)
-                        ->addNotifications($newNotifications);
+            $processedShipments = is_array($obj->Shipments->ProcessedShipment) ? $obj->Shipments->ProcessedShipment : [$obj->Shipments->ProcessedShipment];
+
+            foreach ($processedShipments as $shipment) {
+                if (isset($shipment->Notifications)) {
+                    $newNotifications = Notification::parseArray($shipment->Notifications);
+                    if ($newNotifications) {
+                        $this->setHasErrors(true)
+                            ->addNotifications($newNotifications);
+                    }
                 }
             }
 
-            $this->setShipments([$obj->Shipments->ProcessedShipment]);
+            $this->setShipments($processedShipments);
         }
         return $this;
     }
