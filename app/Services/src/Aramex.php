@@ -821,6 +821,7 @@ class Aramex
                     'shipments' => json_encode($shipments[$i]),
                     'pickupGUID' => $pickupGUID,
                     'user_id' => auth()->id(),
+                    'isTest' => $createdShipment->isTest() ? 1 : 0,
                 ]);
 
                 $shipmentObjects[] = $shipment;

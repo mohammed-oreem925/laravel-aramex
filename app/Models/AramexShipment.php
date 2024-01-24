@@ -28,6 +28,7 @@ class AramexShipment extends Model
         'shipmentAttachments',
         'pickupGUID',
         'user_id',
+        'isTest',
     ];
 
     public function user () {
