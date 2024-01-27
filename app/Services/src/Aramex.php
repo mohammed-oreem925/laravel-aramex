@@ -737,7 +737,9 @@ class Aramex
             $shipment->setDetails($details);
             $shipment->setTransportType($request->input('shipments.' . $i . '.transportType'));
             $shipment->setShippingDateTime((new \DateTime($request->input('shipments.' . $i . '.shipDateTime')))->getTimeStamp());
-            $shipment->setDueDate((new \DateTime($request->input('shipments.' . $i . '.dueDate')))->getTimeStamp());
+            if ($request->input('shipments.' . $i . '.dueDate')) {
+                $shipment->setDueDate((new \DateTime($request->input('shipments.' . $i . '.dueDate')))->getTimeStamp());
+            }
 
             if ($request->input('shipments.' . $i . '.foreignHAWB')) {
                 $shipment->setForeignHAWB($request->input('shipments.' . $i . '.foreignHAWB'));
