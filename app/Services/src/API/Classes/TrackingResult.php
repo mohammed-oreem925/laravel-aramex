@@ -209,7 +209,7 @@ class TrackingResult
     public static function parse($obj)
     {
         $results = [];
-        if (isset($obj->value->TrackingResult)) {
+        if (isset($obj->Value->TrackingResult)) {
             $obj = $obj->Value->TrackingResult;
             if (!is_array($obj)) {
                 $obj = [$obj];

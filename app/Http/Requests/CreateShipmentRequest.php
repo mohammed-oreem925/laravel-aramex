@@ -140,7 +140,7 @@ class CreateShipmentRequest extends FormRequest
             'shipments.*.details.origin' => 'required|string|size:2',
             'shipments.*.details.numberOfPieces' => 'required|integer|max:100|min:1',
             'shipments.*.details.productGroup' => 'required|string|size:3|in:EXP,DOM',
-            'shipments.*.details.productType' => 'required|string|size:3|in:PDX,PPX,PLX,DDX,DPX,GDX,GPX,EXP,OND',
+            'shipments.*.details.productType' => 'required|string|size:3|in:PDX,PPX,PLX,DDX,DPX,GDX,GPX,EPX,OND',
             'shipments.*.details.paymentType' => 'required|size:1|in:P,C,3',
             'shipments.*.details.paymentOptions' => 'nullable|required_if:shipments.*.details.paymentType,C|string|in:ASCC,ARCC,CASH,ACCT,PPST,CRDT',
             'shipments.*.details.services' => 'nullable|array|max:25',
