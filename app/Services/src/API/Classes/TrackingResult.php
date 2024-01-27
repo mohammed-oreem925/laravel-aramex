@@ -208,23 +208,25 @@ class TrackingResult
      */
     public static function parse($obj)
     {
-        $obj = $obj->Value->TrackingResult;
         $results = [];
-        if (!is_array($obj)) {
-            $obj = [$obj];
-        }
-        foreach ($obj as $item) {
-            $results[] = (new self())
-                ->setWaybillNumber($item->WaybillNumber)
-                ->setUpdateCode($item->UpdateCode)
-                ->setUpdateDescription($item->UpdateDescription)
-                ->setUpdateDateTime($item->UpdateDateTime)
-                ->setUpdateLocation($item->UpdateLocation)
-                ->setComments($item->Comments)
-                ->setProblemCode($item->ProblemCode)
-                ->setGrossWeight($item->GrossWeight)
-                ->setChargeableWeight($item->ChargeableWeight)
-                ->setWeightUnit($item->WeightUnit);
+        if (isset($obj->value->TrackingResult)) {
+            $obj = $obj->Value->TrackingResult;
+            if (!is_array($obj)) {
+                $obj = [$obj];
+            }
+            foreach ($obj as $item) {
+                $results[] = (new self())
+                    ->setWaybillNumber($item->WaybillNumber)
+                    ->setUpdateCode($item->UpdateCode)
+                    ->setUpdateDescription($item->UpdateDescription)
+                    ->setUpdateDateTime($item->UpdateDateTime)
+                    ->setUpdateLocation($item->UpdateLocation)
+                    ->setComments($item->Comments)
+                    ->setProblemCode($item->ProblemCode)
+                    ->setGrossWeight($item->GrossWeight)
+                    ->setChargeableWeight($item->ChargeableWeight)
+                    ->setWeightUnit($item->WeightUnit);
+            }
         }
 
         return $results;
