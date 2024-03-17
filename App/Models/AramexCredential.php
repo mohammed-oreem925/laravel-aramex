@@ -21,6 +21,7 @@ class AramexCredential extends Model
         'livePin',
         'user_id',
         'active',
+        'isTest',
     ];
 
     public function user()
