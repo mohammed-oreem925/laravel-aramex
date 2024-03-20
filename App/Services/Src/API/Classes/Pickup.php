@@ -94,27 +94,27 @@ class Pickup implements Normalize
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getPickupDate(): int
+    public function getPickupDate(): string
     {
         return $this->pickupDate;
     }
 
     /**
-     * @param int $pickupDate
+     * @param string $pickupDate
      * @return Pickup
      */
-    public function setPickupDate(int $pickupDate): Pickup
+    public function setPickupDate(string $pickupDate): Pickup
     {
         $this->pickupDate = $pickupDate;
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getReadyTime(): int
+    public function getReadyTime(): string
     {
         return $this->readyTime;
     }
@@ -123,46 +123,46 @@ class Pickup implements Normalize
      * Ready time should always be before latest and closingtime.
      * Date should not be before the current day or more than seven days in advance of the current date.
      *
-     * @param int $readyTime
+     * @param string $readyTime
      * @return Pickup
      */
-    public function setReadyTime(int $readyTime): Pickup
+    public function setReadyTime(string $readyTime): Pickup
     {
         $this->readyTime = $readyTime;
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getLastPickupTime(): int
+    public function getLastPickupTime(): string
     {
         return $this->lastPickupTime;
     }
 
     /**
-     * @param int $lastPickupTime
+     * @param string $lastPickupTime
      * @return Pickup
      */
-    public function setLastPickupTime(int $lastPickupTime): Pickup
+    public function setLastPickupTime(string $lastPickupTime): Pickup
     {
         $this->lastPickupTime = $lastPickupTime;
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getClosingTime(): int
+    public function getClosingTime(): string
     {
         return $this->closingTime;
     }
 
     /**
-     * @param int $closingTime
+     * @param string $closingTime
      * @return Pickup
      */
-    public function setClosingTime(int $closingTime): Pickup
+    public function setClosingTime(string $closingTime): Pickup
     {
         $this->closingTime = $closingTime;
         return $this;

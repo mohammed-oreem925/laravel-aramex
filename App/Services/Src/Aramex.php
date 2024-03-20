@@ -378,13 +378,13 @@ class Aramex
             ->setPickupAddress($pickupAddress)
             ->setPickupContact($pickupContact)
             ->setPickupLocation($request->input('pickup.pickupLocation'))
-            ->setPickupDate(strtotime($request->input('pickup.pickupDate')))
-            ->setReadyTime(strtotime($request->input('picup.readyTime')))
-            ->setLastPickupTime(strtotime($request->input('pickup.lastPickupTime')))
-            ->setClosingTime(strtotime($request->input('pickup.closingTime')))
+            ->setPickupDate($request->input('pickup.pickupDate'))
+            ->setReadyTime($request->input('pickup.readyTime'))
+            ->setLastPickupTime($request->input('pickup.lastPickupTime'))
+            ->setClosingTime($request->input('pickup.closingTime'))
             ->setStatus($request->input('pickup.status'))
             ->setReference1($request->input('pickup.reference1'));
-
+            
         $labelInfo = (new LabelInfo())
             ->setReportId(9201)
             ->setReportType('URL');
