@@ -384,7 +384,7 @@ class Aramex
             ->setClosingTime($request->input('pickup.closingTime'))
             ->setStatus($request->input('pickup.status'))
             ->setReference1($request->input('pickup.reference1'));
-            
+
         $labelInfo = (new LabelInfo())
             ->setReportId(9201)
             ->setReportType('URL');
@@ -938,7 +938,10 @@ class Aramex
         if (!auth()->check()) {
             return;
         }
-        $credentials = auth()->user()->aramexCredential;
+        $user = auth()->user();
+        $aramex_credintals =  \DB::table('aramex_credentials')->where( "organization_id" , "=" ,  $user->organization_id )->first();
+
+        $credentials =  $aramex_credintals ;
         if ($credentials->enable_db_log) {
             $log = new AramexLog();
             $log->request_data = json_encode($requestData);
