@@ -218,3 +218,4 @@ This method allows the user to track an existing shipment’s updates and latest
 # Modifiy the log function to be based on organization 
 
 
+# get credentials based on organization instead of get it based on user 

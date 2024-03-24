@@ -24,8 +24,13 @@ abstract class API implements Normalize
     public function __construct()
     {
         $user = auth()->user();
-        $credential = $user->aramexCredential;
-        $user->aramexCredential->isTest ? $this->useTestAsEnvironment() : $this->useLiveAsEnvironment();
+
+        $aramex_credintals =  \DB::table('aramex_credentials')->where( "organization_id" , "=" ,  $user->organization_id )->first();
+
+        \Log::info( "user aramex credintals" , [ "aramex_credintals" => $aramex_credintals ] ) ;
+
+        $credential = $aramex_credintals ;
+        $aramex_credintals->isTest ? $this->useTestAsEnvironment() : $this->useLiveAsEnvironment();
         $number = $credential->isTest ? $credential->testNumber : $credential->liveNumber;
         $pin = $credential->isTest ? $credential->testPin : $credential->livePin;
         $version = config('aramex.' . $this->environment . '.version');
