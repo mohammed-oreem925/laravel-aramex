@@ -93,8 +93,8 @@ class Aramex
             $origin->setCity($request->input('rate.origin.address.city'));
         }
         $origin->setCountryCode($request->input('rate.origin.address.countryCode'));
-        if ($request->input('rate.origin.address.postCode')) {
-            $origin->setPostCode($request->input('rate.origin.address.postCode'));
+        if ($request->input('rate.origin.address.postalCode')) {
+            $origin->setPostCode($request->input('rate.origin.address.postalCode'));
         }
         if ($request->input('rate.origin.address.stateOrProvinceCode')) {
             $origin->setStateOrProvinceCode($request->input('rate.origin.address.stateOrProvinceCode'));
@@ -112,8 +112,8 @@ class Aramex
             $destination->setCity($request->input('rate.destination.address.city'));
         }
         $destination->setCountryCode($request->input('rate.destination.address.countryCode'));
-        if ($request->input('rate.destination.address.postCode')) {
-            $destination->setPostCode($request->input('rate.destination.address.postCode'));
+        if ($request->input('rate.destination.address.postalCode')) {
+            $destination->setPostCode($request->input('rate.destination.address.postalCode'));
         }
         if ($request->input('rate.destination.address.stateOrProvinceCode')) {
             $destination->setStateOrProvinceCode($request->input('rate.destination.address.stateOrProvinceCode'));
