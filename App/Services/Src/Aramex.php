@@ -768,6 +768,9 @@ class Aramex
         }
 
         $labelInfo = new LabelInfo();
+        if ($request->reportId) {
+            $labelInfo->setReportId($request->reportId);
+        }
 
         // $transaction = new Transaction();
         // if ($request->input('reference1')) {
