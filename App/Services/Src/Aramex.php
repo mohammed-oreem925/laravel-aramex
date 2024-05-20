@@ -321,8 +321,8 @@ class Aramex
                 $pickupItem->setComments($request->input('pickup.pickupItems.' . $i . '.comments'));
             }
 
-            if ($request->input('pickup.pickupItems.' . $i . '.dimensions.length') | $request->input('pickup.pickupItems.' . $i . '.dimensions.width')
-                || $request->input('pickup.pickupItems.' . $i . '.dimensions.height')) {
+            if ($request->input('pickup.pickupItems.' . $i . '.dimensions.length') !== null | $request->input('pickup.pickupItems.' . $i . '.dimensions.width') !== null
+                || $request->input('pickup.pickupItems.' . $i . '.dimensions.height') !== null) {
                 $dimension = new Dimension();
                 $dimension->setLength($request->input('pickup.pickupItems.' . $i . '.dimensions.length'));
                 $dimension->setWidth($request->input('pickup.pickupItems.' . $i . '.dimensions.width'));
@@ -333,7 +333,7 @@ class Aramex
                 $pickupItem->setShipmentDimensions($dimension);
             }
 
-            if ($request->input('pickup.pickupItems.' . $i . '.volume.value')) {
+            if ($request->input('pickup.pickupItems.' . $i . '.volume.value') !== null) {
                 $volume = new Volume();
                 $volume->setValue($request->input('pickup.pickupItems.' . $i . '.volume.value'));
                 if ($request->input('pickup.pickupItems.' . $i . '.volume.unit')) {
@@ -342,14 +342,14 @@ class Aramex
                 $pickupItem->setShipmentVolume($volume);
             }
 
-            if ($request->input('pickup.pickupItems.' . $i . '.cash.amount')) {
+            if ($request->input('pickup.pickupItems.' . $i . '.cash.amount') !== null) {
                 $money = new Money();
                 $money->setValue($request->input('pickup.pickupItems.' . $i . '.cash.amount'));
                 $money->setCurrencyCode($request->input('pickup.pickupItems.' . $i . '.cash.currency'));
                 $pickupItem->setCashAmount($money);
             }
 
-            if ($request->input('pickup.pickupItems.' . $i . '.extraCharges.amount')) {
+            if ($request->input('pickup.pickupItems.' . $i . '.extraCharges.amount') !== null) {
                 $money = new Money();
                 $money->setValue($request->input('pickup.pickupItems.' . $i . '.extraCharges.amount'));
                 $money->setCurrencyCode($request->input('pickup.pickupItems.' . $i . '.extraCharges.currency'));
@@ -378,16 +378,17 @@ class Aramex
             ->setPickupAddress($pickupAddress)
             ->setPickupContact($pickupContact)
             ->setPickupLocation($request->input('pickup.pickupLocation'))
-            ->setPickupDate($request->input('pickup.pickupDate'))
+            ->setPickupDate($request->input('pickup.readyTime'))
             ->setReadyTime($request->input('pickup.readyTime'))
             ->setLastPickupTime($request->input('pickup.lastPickupTime'))
             ->setClosingTime($request->input('pickup.closingTime'))
             ->setStatus($request->input('pickup.status'))
             ->setReference1($request->input('pickup.reference1'));
 
-        $labelInfo = (new LabelInfo())
+            $labelInfo = (new LabelInfo())
             ->setReportId(9201)
             ->setReportType('URL');
+
         $response = $createPickup
             ->setLabelInfo($labelInfo)
             ->setPickup($pickup)
@@ -771,6 +772,9 @@ class Aramex
         if ($request->reportId) {
             $labelInfo->setReportId($request->reportId);
         }
+        if ($request->reportType) {
+            $labelInfo->setReportType($request->reportType);
+        }
 
         // $transaction = new Transaction();
         // if ($request->input('reference1')) {
@@ -819,7 +823,9 @@ class Aramex
                     'reference3' => $result->getShipments()[$i]->Reference3,
                     'foreignHAWB' => $result->getShipments()[$i]->ForeignHAWB,
                     'labelURL' => $result->getShipments()[$i]->ShipmentLabel->LabelURL,
-                    'labelContents' => $result->getShipments()[$i]->ShipmentLabel->LabelFileContents,
+                    'labelContents' => is_string($result->getShipments()[$i]->ShipmentLabel->LabelFileContents)
+                    ? json_encode(utf8_encode($result->getShipments()[$i]->ShipmentLabel->LabelFileContents))
+                    : json_encode($result->getShipments()[$i]->ShipmentLabel->LabelFileContents),
                     'status' => $status,
                     'shipment_details_response' => json_encode($result->getShipments()[$i]->ShipmentDetails),
                     'shipmentAttachments' => $shipmentAttachmentsJson,
@@ -942,9 +948,9 @@ class Aramex
             return;
         }
         $user = auth()->user();
-        $aramex_credintals =  \DB::table('aramex_credentials')->where( "organization_id" , "=" ,  $user->organization_id )->first();
+        $aramex_credintals = \DB::table('aramex_credentials')->where("organization_id", "=", $user->organization_id)->first();
 
-        $credentials =  $aramex_credintals ;
+        $credentials = $aramex_credintals;
         if ($credentials->enable_db_log) {
             $log = new AramexLog();
             $log->request_data = json_encode($requestData);
