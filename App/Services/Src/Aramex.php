@@ -385,7 +385,7 @@ class Aramex
             ->setStatus($request->input('pickup.status'))
             ->setReference1($request->input('pickup.reference1'));
 
-            $labelInfo = (new LabelInfo())
+        $labelInfo = (new LabelInfo())
             ->setReportId(9201)
             ->setReportType('URL');
 
@@ -823,9 +823,7 @@ class Aramex
                     'reference3' => $result->getShipments()[$i]->Reference3,
                     'foreignHAWB' => $result->getShipments()[$i]->ForeignHAWB,
                     'labelURL' => $result->getShipments()[$i]->ShipmentLabel->LabelURL,
-                    'labelContents' => is_string($result->getShipments()[$i]->ShipmentLabel->LabelFileContents)
-                    ? json_encode(utf8_encode($result->getShipments()[$i]->ShipmentLabel->LabelFileContents))
-                    : json_encode($result->getShipments()[$i]->ShipmentLabel->LabelFileContents),
+                    'labelContents' => base64_encode($result->getShipments()[$i]->ShipmentLabel->LabelFileContents),
                     'status' => $status,
                     'shipment_details_response' => json_encode($result->getShipments()[$i]->ShipmentDetails),
                     'shipmentAttachments' => $shipmentAttachmentsJson,
