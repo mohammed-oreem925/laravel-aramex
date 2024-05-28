@@ -17,7 +17,7 @@ return new class extends Migration
             $table->renameColumn('username', 'live_username');
             $table->renameColumn('password', 'live_password');
             $table->unsignedBigInteger('delivery_service_id')->nullable();
-            $table->unsignedBigInteger('merchnat_id')->nullable();
+            $table->unsignedBigInteger('merchant_id')->nullable();
         });
     }
 
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->renameColumn('live_username', 'username');
             $table->renameColumn('live_password', 'password');
             $table->dropColumn('delivery_service_id');
+            $table->dropColumn('merchant_id');
         });
     }
 };
