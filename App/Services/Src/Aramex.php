@@ -80,7 +80,7 @@ class Aramex
     // Rate
     public static function calculateRate(Request $request)
     {
-        $rate = new CalculateRate();
+        $rate = new CalculateRate(new Request(['delivery_service_id' => $request->delivery_service_id]));
         $origin = (new Address());
         $origin->setLine1($request->input('rate.origin.address.line1'));
         if ($request->input('rate.origin.address.line2')) {
@@ -167,7 +167,7 @@ class Aramex
             $details->setCashAdditionalAmount($money);
         }
         if ($request->input('rate.details.services')) {
-            $details->setServices(explode(',', $request->input('rate.details.services')));
+            $details->setServices(implode(',', $request->input('rate.details.services')));
         }
         if ($request->input('rate.details.items')) {
             $items = [];
@@ -492,7 +492,7 @@ class Aramex
             }
 
             if ($request->input('shipments.' . $i . '.details.services')) {
-                $details->setServices(explode(',', $request->input('shipments.' . $i . '.details.services')));
+                $details->setServices(implode(',', $request->input('shipments.' . $i . '.details.services')));
             }
 
             $items = [];

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\Src\API\Classes\ClientInfo;
 use App\Services\Src\API\Classes\Transaction;
 use App\Services\Src\API\Interfaces\Normalize;
+use Illuminate\Http\Request;
 
 abstract class API implements Normalize
 {
@@ -21,21 +22,21 @@ abstract class API implements Normalize
     protected $live_wsdl;
     protected $environment;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $user = auth()->user();
 
-        $aramex_credintals =  \DB::table('aramex_credentials')->where( "organization_id" , "=" ,  $user->organization_id )->first();
+        $aramex_credentials = \DB::table('aramex_credentials')->where("organization_id", $user->organization_id)->where('delivery_service_id', $request->delivery_service_id)->first();
 
-        \Log::info( "user aramex credintals" , [ "aramex_credintals" => $aramex_credintals ] ) ;
-
-        $credential = $aramex_credintals ;
-        $aramex_credintals->isTest ? $this->useTestAsEnvironment() : $this->useLiveAsEnvironment();
-        $number = $credential->isTest ? $credential->testNumber : $credential->liveNumber;
-        $pin = $credential->isTest ? $credential->testPin : $credential->livePin;
+        $credential = $aramex_credentials;
+        $aramex_credentials->isTest ? $this->useTestAsEnvironment() : $this->useLiveAsEnvironment();
+        $username = $credential->isTest ? $credential->test_username : $credential->live_username;
+        $password = $credential->isTest ? $credential->test_password : $credential->live_password;
+        $number = $credential->isTest ? $credential->test_number : $credential->live_number;
+        $pin = $credential->isTest ? $credential->test_pin : $credential->live_pin;
         $version = config('aramex.' . $this->environment . '.version');
 
-        $this->fillClientInfoFromEnv($credential->country_code, $credential->entity, $number, $pin, $credential->username, $credential->password, $version);
+        $this->fillClientInfoFromEnv($credential->country_code, $credential->entity, $number, $pin, $username, $password, $version);
 
         $this->soapClient = new \SoapClient($this->getWsdlAccordingToEnvironment(), array('trace' => 1));
     }

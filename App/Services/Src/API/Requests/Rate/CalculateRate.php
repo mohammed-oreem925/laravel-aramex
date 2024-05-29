@@ -3,10 +3,11 @@
 namespace App\Services\Src\API\Requests\Rate;
 
 use Exception;
-use App\Services\Src\API\Classes\Address;
-use App\Services\Src\API\Classes\ShipmentDetails;
-use App\Services\Src\API\Interfaces\Normalize;
+use Illuminate\Http\Request;
 use App\Services\Src\API\Requests\API;
+use App\Services\Src\API\Classes\Address;
+use App\Services\Src\API\Interfaces\Normalize;
+use App\Services\Src\API\Classes\ShipmentDetails;
 use App\Services\Src\API\Response\Rate\RateCalculatorResponse;
 
 class CalculateRate extends API implements Normalize
@@ -19,11 +20,11 @@ class CalculateRate extends API implements Normalize
     protected $live_wsdl;
     protected $test_wsdl;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->live_wsdl = config('aramex.live.rateURL');
         $this->test_wsdl = config('aramex.test.rateURL');
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
