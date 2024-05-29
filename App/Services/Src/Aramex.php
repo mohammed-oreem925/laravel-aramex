@@ -167,7 +167,7 @@ class Aramex
             $details->setCashAdditionalAmount($money);
         }
         if ($request->input('rate.details.services')) {
-            $details->setServices(implode(',', $request->input('rate.details.services')));
+            $details->setServices(explode(',', $request->input('rate.details.services')));
         }
         if ($request->input('rate.details.items')) {
             $items = [];
@@ -492,7 +492,7 @@ class Aramex
             }
 
             if ($request->input('shipments.' . $i . '.details.services')) {
-                $details->setServices(implode(',', $request->input('shipments.' . $i . '.details.services')));
+                $details->setServices(explode(',', $request->input('shipments.' . $i . '.details.services')));
             }
 
             $items = [];
